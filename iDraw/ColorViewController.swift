@@ -12,13 +12,13 @@ import UIKit
 
 protocol ColorViewControllerDelegate {
     
-    func colorChanged(color: UIColor)
+    func colorChanged(_ color: UIColor)
 }
 
 
 class ColorViewController: UIViewController {
     
-    var color = UIColor.blackColor()
+    var color = UIColor.black
     var delegate: ColorViewControllerDelegate?
 
     @IBOutlet weak var alphaSlider: UISlider!
@@ -50,7 +50,7 @@ class ColorViewController: UIViewController {
         
     }
 
-    @IBAction func colorChanged(sender: UISlider) {
+    @IBAction func colorChanged(_ sender: UISlider) {
         
         colorView.backgroundColor = UIColor(red: CGFloat(redSlider.value), green: CGFloat(greenSlider.value), blue: CGFloat(blueSlider.value), alpha: CGFloat(alphaSlider.value))
         
@@ -63,7 +63,7 @@ class ColorViewController: UIViewController {
     // MARK: - Navigation
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation. Before we go to the ViewController (our destination), delegate changes the color for us.
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if (sender as? UIBarButtonItem)?.tag == 1 {
             self.delegate?.colorChanged(self.color)

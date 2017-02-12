@@ -10,7 +10,7 @@ import UIKit
 
 class Squiggle: UIBezierPath {
     
-    private var color : UIColor
+    fileprivate var color : UIColor
     
 
     // Configure the Squiggle's properties
@@ -19,8 +19,8 @@ class Squiggle: UIBezierPath {
         self.color = color
         super.init()
         super.lineWidth = strokeWidth
-        super.lineCapStyle = CGLineCap.Round
-        super.lineJoinStyle = CGLineJoin.Round
+        super.lineCapStyle = CGLineCap.round
+        super.lineJoinStyle = CGLineJoin.round
         
     }
     

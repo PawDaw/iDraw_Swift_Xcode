@@ -11,22 +11,22 @@ import UIKit
 class ViewDoodle: UIView {
 
     var strokeWidth : CGFloat = 10.0
-    var drawingColor: UIColor = UIColor.yellowColor()
+    var drawingColor: UIColor = UIColor.yellow
     
-    private var finishedSquiggles = [Squiggle]()
-    private var currentSquiggle = [UITouch: Squiggle]()
+    fileprivate var finishedSquiggles = [Squiggle]()
+    fileprivate var currentSquiggle = [UITouch: Squiggle]()
     
     
     //required init
     required init?(coder aDecoder: NSCoder){
         super.init(coder: aDecoder)
-        self.multipleTouchEnabled = true
+        self.isMultipleTouchEnabled = true
         
     }
     
     // deaw the completed lines ( squiggles ) and the current one
     
-    override func drawRect(rect: CGRect) {
+    override func draw(_ rect: CGRect) {
         for squiggle in finishedSquiggles {
             squiggle.stroke()
         }
@@ -37,27 +37,27 @@ class ViewDoodle: UIView {
     }
     
     // add a new line to the disctionary currentSquiggles
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
     
         // go thoud on all touches
         for touch in touches{
             let squiggle = Squiggle(color: drawingColor, strokeWidth: strokeWidth)
-            squiggle.moveToPoint(touch.locationInView(self))
+            squiggle.move(to: touch.location(in: self))
             currentSquiggle[touch] = squiggle
         }
     }
     
     // update the currentSquiggles dictionary
-    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         for touch in touches{
-            currentSquiggle[touch]?.addLineToPoint(touch.locationInView(self))
+            currentSquiggle[touch]?.addLine(to: touch.location(in: self))
             setNeedsDisplay() // create pixels
         }
     }
     
     // adds the finished currentSquiggle to the finishedSquiggles Array
-    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         for touch in touches{
             if let squiggle = currentSquiggle[touch] {
@@ -69,7 +69,7 @@ class ViewDoodle: UIView {
     }
     
     // if interrupted by the OS remove the in-progrss aquiggle
-    override func touchesCancelled(touches: Set<UITouch>?, withEvent event: UIEvent?) {
+    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         currentSquiggle.removeAll()
     }
@@ -93,13 +93,13 @@ class ViewDoodle: UIView {
         UIGraphicsBeginImageContextWithOptions(self.bounds.size, true, 0.0)
         
         // render the doodleView's content into the created graphiscimagecontext
-        self.layer.renderInContext(UIGraphicsGetCurrentContext()!)
+        self.layer.render(in: UIGraphicsGetCurrentContext()!)
         
         // Create an image from the current context
 
         let newImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-        return newImage
+        return newImage!
         
         
         

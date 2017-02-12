@@ -9,7 +9,7 @@
 import UIKit
 
 protocol StrokeViewControllerDelegate {
-    func strokeWidthChanged(width: CGFloat)
+    func strokeWidthChanged(_ width: CGFloat)
 }
 
 // UIView subclass for drawing the sample line
@@ -20,12 +20,12 @@ class SampleLineView: UIView {
         super.init(coder: aDecoder)
         
         let y = frame.height / 2
-        sampleLine.moveToPoint(CGPointMake(10, y))
-        sampleLine.addLineToPoint(CGPointMake(frame.width - 20, y))
+        sampleLine.move(to: CGPoint(x: 10, y: y))
+        sampleLine.addLine(to: CGPoint(x: frame.width - 20, y: y))
     }
     
-    override func drawRect(rect: CGRect) {
-        UIColor.blackColor().setStroke()
+    override func draw(_ rect: CGRect) {
+        UIColor.black.setStroke()
         sampleLine.stroke()
     }
 }
@@ -58,13 +58,13 @@ class StrokeViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func lineWidthChanged(sender: UISlider) {
+    @IBAction func lineWidthChanged(_ sender: UISlider) {
         strokeWidth = CGFloat(sender.value)
         drawLineWithThickness(strokeWidth)
     }
    
     
-    private func drawLineWithThickness(thickness: CGFloat) {
+    fileprivate func drawLineWithThickness(_ thickness: CGFloat) {
         strokeWidthView.sampleLine.lineWidth = thickness
         strokeWidthView.setNeedsDisplay()
     }
@@ -74,7 +74,7 @@ class StrokeViewController: UIViewController {
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation. Before we go to the ViewController (our destination), delegate changes the stroke;s width for us.
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (sender as? UIBarButtonItem)?.tag == 1 {
             self.delegate?.strokeWidthChanged(self.strokeWidth)
         }
